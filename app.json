@@ -1,0 +1,13 @@
+{
+    "pages": [
+        "demo/index"
+    ],
+    "window": {
+        "navigationBarTitleText": "Demo"
+    },
+    "networkTimeout": {
+        "request": 10000,
+        "downloadFile": 10000
+    },
+    "debug": true
+}
