@@ -298,7 +298,7 @@ Component({
                         })
                     },
                     fail:err =>{
-                        console.log(err);
+                        this.triggerEvent('cropperFail',err)
                     }
                 },this);
             })
