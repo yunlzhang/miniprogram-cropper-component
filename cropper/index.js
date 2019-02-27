@@ -69,6 +69,10 @@ Component({
                 
             }
         },
+        isCircleCrop:{
+            type:Boolean,
+            value:false
+        },
         enableScale:{
             type:Boolean,
             value:false
@@ -79,6 +83,14 @@ Component({
         }
     },
     data,
+    ready(){
+        if(this.data.isCircleCrop){
+            //圆形裁剪 强制比例为1
+            this.setData({
+                ratio:1
+            })
+        }
+    },
     methods: {
         loadImage() {
             let {ratio,imageSrc} = this.data;
@@ -264,6 +276,15 @@ Component({
         contentTouchEnd(){},  
         // 获取图片
         confirmCropper() {
+            const {isCircleCrop} = this.data;;
+            if(isCircleCrop){
+                this.circleCrop()
+            }else{
+                this.normalCropper();
+            }
+        },
+
+        normalCropper(){
             let {imageSrc,cropperW,cropperH,cutL,cutT,cutR,cutB} = this.data;
             let {IMG_REAL_W,IMG_REAL_H,IMG_TYPE} = this.data.C_CONSTANTS;
             // 将图片写入画布
@@ -303,6 +324,48 @@ Component({
                 },this);
             })
         },
+
+        circleCrop(){
+            let {imageSrc,cropperW,cropperH,cutL,cutT,cutR,cutB} = this.data;
+            let {IMG_REAL_W,IMG_REAL_H,IMG_TYPE} = this.data.C_CONSTANTS;
+            // 将图片写入画布
+            const ctx = wx.createCanvasContext('cropper',this)
+            let canvasW = ((cropperW - cutL - cutR) / cropperW) * IMG_REAL_W
+            let canvasL = (cutL / cropperW) * IMG_REAL_W
+            let canvasT = (cutT / cropperH) * IMG_REAL_H
+            
+            this.setData({
+                canvasW:canvasW,
+                canvasH:canvasW
+            },() => {
+                ctx.arc(canvasW / 2,canvasW / 2,canvasW / 2,0,2 * Math.PI);
+                ctx.clip();
+                ctx.drawImage(imageSrc, canvasL, canvasT, canvasW, canvasW,0,0,canvasW,canvasW);
+                ctx.draw(true, () => {
+                    wx.canvasToTempFilePath({
+                        fileType:IMG_TYPE || 'jpg',
+                        canvasId: 'cropper',
+                        success: (res) => {
+                            //图片裁剪成功
+                            this.cancelCropper();
+                            this.triggerEvent('cropperDone', {
+                                src:res.tempFilePath,
+                                cropperData:{
+                                    x: canvasL,
+                                    y: canvasT,
+                                    width: canvasW,
+                                    height: canvasW
+                                }
+                            })
+                        },
+                        fail:err =>{
+                            this.triggerEvent('cropperFail',err)
+                        }
+                    },this);
+                })
+            })
+        },
+
         cancelCropper(){
             let originData = {}
             try{

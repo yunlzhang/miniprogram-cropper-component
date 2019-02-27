@@ -1,2 +1,2 @@
 <button bindtap="handleTap">上传图片</button>
-<cropper imageSrc="{{imageSrc}}" enableScale="{{true}}" ratio="{{2/1}}" bind:cropperDone="cropperDone" bind:cropperCancel="cropperCancel" bind:cropperFail="cropperFail"></cropper>
+<cropper imageSrc="{{imageSrc}}" enableScale="{{true}}" isCircleCrop="{{true}}" ratio="{{2/1}}" bind:cropperDone="cropperDone" bind:cropperCancel="cropperCancel" bind:cropperFail="cropperFail"></cropper>

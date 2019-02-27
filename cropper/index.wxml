@@ -36,6 +36,7 @@
         <button type="primary reverse" class="btn" bindtap="cancelCropper" style='margin-top: 30rpx;'> 取消 </button>
         <button type="primary" class="cropper-confirm btn" bindtap="confirmCropper" style='margin-top: 30rpx;'> 确认 </button>
     </view>
-    <canvas canvas-id="cropper" style="position:absolute;border: 1px solid red; width:{{qualityWidth}}px;height:{{qualityWidth/innerAspectRadio}}px;top:-9999px;left:-9999px;"></canvas>
+    <canvas wx:if="{{!isCircleCrop}}" canvas-id="cropper" style="position:absolute;border: 1px solid red; width:{{qualityWidth}}px;height:{{qualityWidth/innerAspectRadio}}px;top:-9999px;left:-9999px;"></canvas>
+    <canvas wx:else canvas-id="cropper" style="position:absolute;border: 1px solid red; width:{{canvasW}}px;height:{{canvasH}}px;top:-9999px;left:-9999px;"></canvas>
 </view>
 
