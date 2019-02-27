@@ -32,6 +32,8 @@ page.json
 
     cropperFail(Function):裁剪失败回调
 
+    isCircleCrop(Boolean) 是否是圆形裁剪 圆形裁剪ratio 强制为1
+
 ### 回调
 
 ```js
@@ -53,6 +55,11 @@ page.json
 
     })
 ```
+
+
+更新日志：
+    1.1  等比例裁剪等
+    1.2  支持圆形裁剪
 
 
 参考:[传送门](https://github.com/IFmiss/wx-cropper)
